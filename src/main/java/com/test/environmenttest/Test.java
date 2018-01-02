@@ -7,6 +7,7 @@ package com.test.environmenttest;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Map;
 import java.util.Properties;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -38,18 +39,25 @@ public class Test extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Environment</title>");            
+            out.println("<title>Environment</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>System Properties" + "</h1>");
-            
+
             Properties p = System.getProperties();
             for (String key : p.stringPropertyNames()) {
                 String value = p.getProperty(key);
-                out.println(key + " : " + value + "<br/>");
+                out.println(key + " = " + value + "<br/>");
             }
 
-            
+            out.println("<h1>System Environment" + "</h1>");
+
+            Map<String, String> env = System.getenv();
+            for (String envName : env.keySet()) {
+                out.format("%s = %s%n", envName, env.get(envName));
+                out.println("<br/>");
+            }
+
             out.println("</body>");
             out.println("</html>");
         }
