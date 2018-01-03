@@ -5,6 +5,8 @@
  */
 package com.test.environmenttest;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
@@ -56,6 +58,23 @@ public class Test extends HttpServlet {
             for (String envName : env.keySet()) {
                 out.format("%s = %s%n", envName, env.get(envName));
                 out.println("<br/>");
+            }
+
+            String propertyFile = "/tmp/app-data/test.properties";
+            File tmpDir = new File(propertyFile);
+            boolean fileExists = tmpDir.exists();
+
+            if (fileExists) {
+                out.println("<h1>File Properties (" + propertyFile + ")</h1>");
+
+                Properties fileProperties = new Properties();
+                fileProperties.load(new FileInputStream(propertyFile));
+                for (String key : fileProperties.stringPropertyNames()) {
+                    String value = fileProperties.getProperty(key);
+                    out.println(key + " = " + value + "<br/>");
+                }
+            } else {
+                out.println("<h1>File Properties (DOES NOT EXIST! - " + propertyFile + ")</h1>");
             }
 
             out.println("</body>");
